@@ -1,0 +1,6 @@
+{
+  "express": {
+    "views": "path:./public/templates"
+  },
+  "middleware": {}
+}
