@@ -245,6 +245,7 @@
     "sanitize.css": "4.1.0",
     "styled-components": "2.0.0",
     "warning": "3.0.0",
+    "webpack": "^3.5.5",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
@@ -296,7 +297,6 @@
     "shelljs": "0.7.7",
     "style-loader": "0.18.1",
     "url-loader": "0.5.8",
-    "webpack": "3.5.5",
     "webpack-dev-middleware": "1.11.0",
     "webpack-hot-middleware": "2.18.0"
   }
