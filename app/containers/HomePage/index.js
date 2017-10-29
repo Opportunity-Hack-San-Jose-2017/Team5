@@ -10,15 +10,24 @@
  */
 
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import SurveyModal from './surveyModal';
+import SurveyList from './surveyList';
 
 export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
+    const Surveys = [{"name": 'Survey 1', id:0, "postedBy": "John Doe", "isResultAvailable": true},
+                {"name": 'Survey 2', id:1, "postedBy": "John Doe", "isResultAvailable": true},
+                {"name": 'Survey 3', id:2, "postedBy": "John Doe", "isResultAvailable": false},
+                {"name": 'Survey 4', id:3, "postedBy": "John Doe", "isResultAvailable": true}
+                ];
     return (
-      <h1>
-        <FormattedMessage {...messages.header} />
-      </h1>
+      <div>
+        <h1>
+          <center>Welcome to Citizen School Survey</center>
+        </h1>
+        <SurveyModal />
+        <SurveyList surveys={Surveys} />
+      </div>
     );
   }
 }
