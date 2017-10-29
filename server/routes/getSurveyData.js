@@ -4,8 +4,10 @@ let db;
 const express = require('express');
 const router = express.Router();
 const mongo = require('../mongo');
+
+//Collections
 const DATA_COLLECTION = 'userdetails';
-const SURVEY_COLLECTION = 'surveydata';
+const SURVEY_DATA_COLLECTION = 'surveydata';
 const USER_SURVEY_TAKEN = 'surveytakendata'
 
 mongo.connect((_db) => {
@@ -24,7 +26,7 @@ router.get('/data', (req, res) => {
 
 //GET for questions being taken
 router.get('/questions', (req, res) => {
-    db.collection(SURVEY_COLLECTION).find({}).toArray(function(err, docs) {
+    db.collection(SURVEY_DATA_COLLECTION).find({}).toArray(function(err, docs) {
         if (err) {
             handleError(res, err.message, "Failed to get questions.");
         } else {
@@ -60,5 +62,18 @@ router.post('/surveyTaken', (req, res) => {
 
 });
 
+router.post('/postExcelData', (req, resp) => {
+
+    console.log("<<-- POST EXCEL DATA ->>")
+
+    if(!resp.body || resp.body.length == 0) { handleError(res, "Excel Parsing error", "Size is either zero or undefined", 400); }
+    db.collection(SURVEY_DATA_COLLECTION).insertOne(resp.body, function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to POST survey taken data.");
+        } else {
+            res.status(201).json(doc);
+        }
+    });
+});
 
 module.exports = router;
