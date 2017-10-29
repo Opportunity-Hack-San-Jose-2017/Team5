@@ -247,12 +247,13 @@
     "redux-immutable": "4.0.0",
     "redux-saga": "0.15.3",
     "reselect": "3.0.1",
+    "rimraf": "^2.6.1",
     "sanitize.css": "4.1.0",
     "styled-components": "2.0.0",
     "warning": "3.0.0",
+    "webpack": "^3.5.5",
     "whatwg-fetch": "2.0.3",
-    "xlsx": "^0.11.7",
-    "webpack": "^3.5.5"
+    "xlsx": "^0.11.7"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "2.0.1",
