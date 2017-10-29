@@ -10,11 +10,9 @@ const USER_SURVEY_TAKEN = 'surveytakendata'
 
 mongo.connect((_db) => {
   db = _db;
-  console.log("inside mongo connect", db);
 });
 
 router.get('/data', (req, res) => {
-    console.log("Inside data");
     db.collection(DATA_COLLECTION).find({}).toArray(function(err, docs) {
         if (err) {
             handleError(res, err.message, "Failed to get user data.");
@@ -37,9 +35,12 @@ router.get('/questions', (req, res) => {
 
 //POST for surveyTaken
 router.post('/surveyTaken', (req, res) => {
+    console.log("inside Survey taken");
+    console.log(req);
     if (!(req.body.firstName || req.body.lastName || req.body.grade || req.body.course || req.body.survey)) {
         handleError(res, "Invalid user input", "Mandatory fields must be filled.", 400);
     }
+
 
     const newUser = {
         firstName: req.body.firstName,
