@@ -25,7 +25,7 @@ router.get('/data', (req, res) => {
 
 
 
-router.get('/data', (req, res) => {
+router.get('/questions', (req, res) => {
     db.collection(SURVEY_COLLECTION).find({}).toArray(function(err, docs) {
         if (err) {
             handleError(res, err.message, "Failed to get user data.");
