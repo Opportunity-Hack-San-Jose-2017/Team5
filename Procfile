@@ -1,1 +1,1 @@
-web: npm run build && cross-env NODE_ENV=production node server
+web: cross-env NODE_ENV=production node server
