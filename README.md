@@ -1,7 +1,14 @@
+# Setup:
+
 To Start:
+
+Set Registry:
+
+npm config set registry https://registry.npmjs.org/
 
 
 npm install
+
 npm run start
 
 For Production:
