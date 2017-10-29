@@ -49,9 +49,6 @@
   },
   "pre-commit": "lint:staged",
   "babel": {
-    "plugins": [
-      "styled-components"
-    ],
     "presets": [
       [
         "env",
@@ -249,7 +246,6 @@
     "reselect": "3.0.1",
     "rimraf": "^2.6.1",
     "sanitize.css": "4.1.0",
-    "styled-components": "2.0.0",
     "warning": "3.0.0",
     "webpack": "^3.5.5",
     "whatwg-fetch": "2.0.3",
@@ -264,7 +260,6 @@
     "babel-plugin-dynamic-import-node": "1.0.2",
     "babel-plugin-react-intl": "2.3.1",
     "babel-plugin-react-transform": "2.0.2",
-    "babel-plugin-styled-components": "1.1.4",
     "babel-plugin-transform-es2015-modules-commonjs": "6.24.1",
     "babel-plugin-transform-react-constant-elements": "6.23.0",
     "babel-plugin-transform-react-inline-elements": "6.22.0",
