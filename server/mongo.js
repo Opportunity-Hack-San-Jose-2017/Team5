@@ -11,7 +11,6 @@ exports.connect = function(callback){
         if (err) { throw new Error('Could not connect: '+err);
         }
         db = _db;
-        console.log("Inside Mongo File");
         callback(db);
     });
 };
