@@ -248,7 +248,7 @@
     "warning": "3.0.0",
     "whatwg-fetch": "2.0.3",
     "xlsx": "^0.11.7",
-    "youtube-api-search": "0.0.5"
+    "webpack": "^3.5.5"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "2.0.1",
