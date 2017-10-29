@@ -249,7 +249,10 @@
     "warning": "3.0.0",
     "webpack": "^3.5.5",
     "whatwg-fetch": "2.0.3",
-    "xlsx": "^0.11.7"
+    "xlsx": "^0.11.7",
+    "babel-preset-env": "1.5.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-0": "6.24.1"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "2.0.1",
