@@ -286,7 +286,12 @@
     "url-loader": "0.5.8",
     "circular-dependency-plugin": "3.0.0",
     "coveralls": "2.13.1",
-    "css-loader": "0.28.4"
+    "css-loader": "0.28.4",
+    "add-asset-html-webpack-plugin": "2.0.1",
+    "babel-cli": "6.24.1",
+    "babel-core": "6.24.1",
+    "babel-eslint": "7.2.3",
+    "babel-loader": "7.1.0"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "2.0.1",
