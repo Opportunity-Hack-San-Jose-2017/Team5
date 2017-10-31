@@ -17,6 +17,17 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import ResultsPage from 'containers/ResultsPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import Auth from '../../components/Auth/Auth';
+import history from '../../components/Auth/history';
+import LoginPage from '../../components/Auth/Login';
+
+const auth = new Auth();
+
+const handleAuthentication = (nextState, replace) => {
+    if (/access_token|id_token|error/.test(nextState.location.hash)) {
+        auth.handleAuthentication();
+    }
+}
 
 export default function App() {
   return (
@@ -24,6 +35,8 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/results" component={ResultsPage} />
+          <Route exact path="/login" component={auth.login} />
+          <Route exact path="/callback" component={HomePage} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>
