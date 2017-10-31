@@ -34,7 +34,7 @@ export default function App() {
     <div>
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route exact path="/results" component={ResultsPage} />
+        <Route exact path="/results/:surveyName" component={ResultsPage} />
           <Route exact path="/login" component={auth.login} />
           <Route exact path="/callback" component={HomePage} />
         <Route component={NotFoundPage} />
