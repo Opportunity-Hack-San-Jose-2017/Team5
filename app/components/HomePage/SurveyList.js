@@ -2,6 +2,7 @@
 /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 const SurveyList = (props) => {
     const SurveyItems = props.surveys.map((survey) => {
@@ -19,7 +20,7 @@ const SurveyList = (props) => {
                         </ul>
                     </div>
                     <div className="col-md-2">
-                        <a href="/results" className="btn btn-default survey-btn">View Results</a>
+                        <Link to={"/results/" + survey.key} className="btn btn-default survey-btn">View Results</Link>
                     </div>
                     <div className="col-md-1">
                         <button className="btn btn-warning survey-btn">Remove</button>
