@@ -19,7 +19,7 @@ const SurveyList = (props) => {
                         </ul>
                     </div>
                     <div className="col-md-2">
-                        <button className="btn btn-default survey-btn" >View Results</button>
+                        <a href="/results" className="btn btn-default survey-btn">View Results</a>
                     </div>
                     <div className="col-md-1">
                         <button className="btn btn-warning survey-btn">Remove</button>

@@ -40,10 +40,4 @@ injectGlobal`
     margin-top: 40px;
     float: right
   }
-  
-  .navbar-brand img {
-    
-    max-width:110px;
-    max-height: 110px;
-  }
 `;
