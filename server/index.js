@@ -1,5 +1,4 @@
 /* eslint consistent-return:0 */
-/* eslint-disable */
 'use strict';
 
 const express = require('express');
