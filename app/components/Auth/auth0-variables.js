@@ -5,5 +5,5 @@
 export const AUTH_CONFIG = {
     domain: 'rupeshdabbir.auth0.com',
     clientId: 'hOTN4I5SxI6k7WyBOjXZV56uSjii7yNK',
-    callbackUrl: 'http://localhost:3000/callback'
+    callbackUrl: `${window.location.origin}/callback`
 }
