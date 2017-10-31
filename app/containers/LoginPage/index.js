@@ -9,6 +9,11 @@
  * the linting exception.
  */
 /* eslint-disable */
+
+
+/***
+ * TODO: Ignore this file for now i will take care of these changes later
+ */
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import {Well, Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';

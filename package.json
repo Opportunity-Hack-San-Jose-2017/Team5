@@ -1,6 +1,6 @@
 {
   "name": "CitizenSchoolsInfographics",
-  "version": "3.5.0",
+  "version": "1.0.0",
   "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
   "repository": {
     "type": "git",
@@ -210,6 +210,7 @@
   },
   "dependencies": {
     "add-asset-html-webpack-plugin": "2.0.1",
+    "auth0-js": "^8.10.1",
     "axios": "^0.17.0",
     "babel-cli": "6.24.1",
     "babel-core": "6.24.1",
