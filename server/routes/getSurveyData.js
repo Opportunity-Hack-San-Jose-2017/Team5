@@ -71,7 +71,7 @@ router.post('/postExcelData', (req, resp) => {
 
     const mockResponse = {
       'title': req.body.surveyName,
-      'key': uid(6),
+      'key': uid(5),
       'postedBy': req.body.teacherName,
       'postedOn': moment().format('LLL')
     }

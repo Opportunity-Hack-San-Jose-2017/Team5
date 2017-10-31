@@ -41,38 +41,44 @@ export default class Login extends Component {
 
   render() {
     return (
-      <Well bsSize='large' bsStyle='custom'>
-        <div className='Login'>
-          <img src={logo} alt='Citizen Schools' width="45%" height="80%" className="login-image"/>
-          <form onSubmit={this.handleSubmit}>
-            <FormGroup controlId='email'>
-              <FormControl
-                autoFocus
-                type='email'
-                value={this.state.email}
-                onChange={this.handleChange}
-                placeholder="Email"
-              />
-            </FormGroup>
-            <FormGroup controlId='password'>
-              <FormControl
-                value={this.state.password}
-                onChange={this.handleChange}
-                type='password'
-                placeholder="Password"
-              />
-            </FormGroup>
-            <Button
-              bsStyle='primary'
-              block
-              /*disabled={!this.validateForm()}*/
-              type='submit'
-            >
-              Login
-            </Button>
-          </form>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-4 col-md-offset-4">
+            <Well bsSize='large' bsStyle='custom'>
+              <div className='Login'>
+                <img src={logo} alt='Citizen Schools' width="45%" height="80%" className="login-image"/>
+                <form onSubmit={this.handleSubmit}>
+                  <FormGroup controlId='email'>
+                    <FormControl
+                      autoFocus
+                      type='email'
+                      value={this.state.email}
+                      onChange={this.handleChange}
+                      placeholder="Email"
+                    />
+                  </FormGroup>
+                  <FormGroup controlId='password'>
+                    <FormControl
+                      value={this.state.password}
+                      onChange={this.handleChange}
+                      type='password'
+                      placeholder="Password"
+                    />
+                  </FormGroup>
+                  <Button
+                    bsStyle='primary'
+                    block
+                    /*disabled={!this.validateForm()}*/
+                    type='submit'
+                  >
+                    Login
+                  </Button>
+                </form>
+              </div>
+            </Well>
+          </div>
         </div>
-      </Well>
+      </div>
     );
   }
 }

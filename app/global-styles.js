@@ -52,12 +52,7 @@ injectGlobal`
   }
   
   .well-custom {
-      max-width:40%;
-      margin-left: -100px 0 0 -150px;
-      background-color: #ffffff;
-      top: 20%;
-      left: 35%;
-      position: absolute;
+     margin-top: 40%;
   }
   
   .modal-title-custom {
@@ -69,4 +64,5 @@ injectGlobal`
     margin-left: auto;
     margin-right: auto;
   }
+}
 `;
