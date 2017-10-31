@@ -12,9 +12,9 @@ const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require('ngr
 const resolve = require('path').resolve;
 const app = express();
 const getSurveyData = require('./routes/getSurveyData');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 
-//body parser for POST api
+// body parser for POST api
 app.use(bodyParser.json());
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here

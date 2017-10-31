@@ -40,4 +40,29 @@ injectGlobal`
     margin-top: 40px;
     float: right
   }
+  
+  .Login {
+    padding: 30px 0;
+  }
+
+  .Login form {
+    padding-top: 40px;
+    margin: 0 auto;
+    max-width: 350px;
+  }
+  
+  .well-custom {
+     margin-top: 40%;
+  }
+  
+  .modal-title-custom {
+    font-weight: bold
+  }
+  
+  .login-image {
+     display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 `;
