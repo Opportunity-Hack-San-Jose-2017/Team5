@@ -83,12 +83,12 @@ export default class ResultsPage extends Component { // eslint-disable-line reac
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseTwo" className="panel-collapse collapse">
+                            <div id="collapseTwo" className="panel-collapse collapse in">
                                 <div className="panel-body">
                                     <div className="container">
                                         <div className="col-md-6">
-                                            <PieChart width={800} height={400}>
-                                                <Pie isAnimationActive={false} dataKey="value"  data={data01} cx={200} cy={200} outerRadius={80} fill="#8884d8" label />
+                                            <PieChart width={800} height={500} margin={{top: -50, right: 0, left: 0, bottom: 0}}>
+                                                <Pie isAnimationActive={true} dataKey="value"  data={data01} cx={200} cy={200} outerRadius={100} fill="#8884d8" label />
                                                 <Tooltip/>
                                             </PieChart>
                                         </div>
@@ -120,8 +120,8 @@ export default class ResultsPage extends Component { // eslint-disable-line reac
                                 <div className="panel-body">
                                     <div className="container">
                                     <div className="col-md-6">
-                                    <PieChart width={800} height={400}>
-                                    <Pie isAnimationActive={false} dataKey="value"  data={data01} cx={200} cy={200} outerRadius={80} fill="#8884d8" label />
+                                    <PieChart width={800} height={500} margin={{top: -50, right: 0, left: 0, bottom: 0}}>
+                                    <Pie isAnimationActive={true} dataKey="value"  data={data01} cx={200} cy={200} outerRadius={100} fill="#8884d8" label />
                                     <Tooltip/>
                                     </PieChart>
                                     </div>
