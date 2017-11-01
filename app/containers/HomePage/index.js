@@ -13,7 +13,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import FileUpload from '../../components/HomePage/FileUpload';
 
-const surveys = [{}]
+const surveys = []
 export default function HomePage() { // eslint-disable-line react/prefer-stateless-function
   return (
     <FileUpload surveys={surveys} />

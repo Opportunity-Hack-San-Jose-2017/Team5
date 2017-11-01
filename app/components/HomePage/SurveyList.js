@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SurveyList = (props) => {
+    console.log(props.surveys.length)
     const SurveyItems = props.surveys.map((survey) => {
         return (
             <div className="media" key={survey.key}>
@@ -31,7 +32,13 @@ const SurveyList = (props) => {
 
     return (
         <div className="col-md-12">
-            {SurveyItems}
+            {props.surveys.length == 0 ? <div className="media">
+                <div className="media-body">
+                    <div className="col-lg-12">
+                        <h1>No survey result found</h1>
+                    </div>
+                </div>
+            </div> : SurveyItems}
         </div>
     );
 }
