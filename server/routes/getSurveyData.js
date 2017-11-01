@@ -46,7 +46,6 @@ router.post('/surveyTaken', (req, res) => {
         handleError(res, 'Invalid user input', 'Mandatory fields must be filled.', 400);
     }
 
-
     const newUser = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -65,33 +64,59 @@ router.post('/surveyTaken', (req, res) => {
 
 });
 
-router.post('/postExcelData', (req, resp) => {
 
-    console.log('<<-- POST EXCEL DATA ->>')
-    const key = uid(5);
-    let postData = {};
-    postData[key] = req.body;
-    console.log(postData);
-    const mockResponse = {
-      'title': req.body.surveyName,
-      'key': key,
-      'postedBy': req.body.teacherName,
-      'postedOn': moment().format('LLL')
+router.post('/getAllSurveys', (req, res) => {
+
+  if(!req.body || req.body.length == 0) {
+    res.status(400).send('Need teacher name');
+    return;
+  }
+  db.collection(SURVEY_DATA_COLLECTION).find({}).toArray(function(err, docs) {
+    if(err){
+      console.log(err);
+      res.status(500).send(err);
+    } else {
+      // console.log("Found the following records");
+      // console.dir(docs);
+      res.status(200).json(docs);
     }
+  });
+});
 
+router.put('/updateSurvey/:survey', (req, res) => {
+  console.dir(req.params.survey);
+  if(!req.body || req.body.length == 0) {
+    res.status(400).send('Invalid survey id');
+    return ;
+  }
+
+});
+
+router.post('/postExcelData', (req, res) => {
+
+    console.log('<<-- POST EXCEL DATA ->>');
     if(!req.body || req.body.length == 0) {
       resp.status(400).send('Invalid Survey Data');
+      return;
       // handleError(res, 'Excel Parsing error', 'Size is either zero or undefined', 400);
     }
-    resp.status(201).json(mockResponse);
-    /* db.collection(SURVEY_DATA_COLLECTION).insertOne(resp.body, function(err, doc) {
+    const key = uid(5);
+    let survey = {};
+    survey._id = key;
+    survey = Object.assign(survey, req.body);
+    survey.isSurveyEnabled = survey.isSurveyEnabled ? survey.isSurveyEnabled : false;
+    survey.postedOn =  moment().format('LLL');
+
+    /*res.status(201).json(survey);*/
+     db.collection(SURVEY_DATA_COLLECTION).insertOne(survey, function(err, doc) {
         if (err) {
+          console.log(err);
             //handleError(res, err.message, 'Failed to POST survey taken data.');
-          res.status(400).send('Failed to POST survey taken data.')
+          res.status(400).send(err);
         } else {
-            res.status(201).json(doc);
+            res.status(201).json(survey);
         }
-    });*/
+    });
 });
 
 module.exports = router;

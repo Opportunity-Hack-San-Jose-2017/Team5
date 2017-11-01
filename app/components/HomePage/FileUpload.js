@@ -16,21 +16,43 @@ class FileUpload extends Component {
     super(props)
 
     this.state = {
-      surveys: props.surveys,
+      surveys: [],
       showModal: false,
-      surveyName: '',
-      surveyData: undefined
+      surveyTitle: '',
+      surveyData: undefined,
+      isSurveyEnabled: false
     };
 
+    this.getSurveys('Allison');
     this.handleFiles = this.handleFiles.bind(this)
     this.saveSurvey = this.saveSurvey.bind(this)
     this.open = this.open.bind(this)
     this.close = this.close.bind(this)
   }
 
+  getSurveys (teacherName) {
+     axios.post('/survey/getAllSurveys', {
+      teacherName,
+    }).then((response) => {
+      if (response.status === 200) {
+        // console.dir(response)
+        this.setState({
+          surveys: response.data
+        });
+      } else {
+        alert('Something went wrong');
+        console.log(response);
+      }
+    }).catch((error) => {
+      alert('Something went wrong');
+      console.log(error);
+    });
+  }
+
   open = () => {
-    this.setState({surveyName: ''});
+    this.setState({surveyTitle: ''});
     this.setState({surveyData: undefined});
+    this.setState({isSurveyEnabled: false});
     this.setState({ showModal: true });
   }
 
@@ -43,6 +65,7 @@ class FileUpload extends Component {
       [event.target.id]: event.target.value
     });
   }
+
 
   handleFiles = (files) => {
 
@@ -74,22 +97,24 @@ class FileUpload extends Component {
 
   saveSurvey (e) {
     e.preventDefault();
-    if (this.state.surveyData && this.state.surveyName !== '') {
+    if (this.state.surveyData && this.state.surveyTitle !== '') {
        const that = this;
        this.setState({ showModal: false });
        const surveys = this.state.surveys;
-       const surveyName = this.state.surveyName;
+       const surveyTitle = this.state.surveyTitle;
         axios.post('/survey/postExcelData', {
-          surveyName: surveyName,
-          surveyQuestions: {questions: this.state.surveyData},
-          teacherName: 'Allison'
+          surveyTitle: surveyTitle,
+          surveyQuestions: this.state.surveyData,
+          isSurveyEnabled: this.state.isSurveyEnabled,
+          postedBy: 'Allison'
         }).then(function (response) {
+          console.dir(response);
             if (response.status === 201) {
               surveys.push(response.data)
               that.setState({ surveys: surveys });
             }
         }).catch(function (error) {
-            console.log('Something went wrong at the server side');
+            alert('Something went wrong at the server side');
             console.log(error);
         });
     } else {
@@ -117,10 +142,12 @@ class FileUpload extends Component {
                 <div className="row">
                   <div className="col-md-12">
                     <div className="form-group">
-                      <label>Enter Survey Name</label>
-                      <input type="text" className="form-control" id="surveyName" placeholder="Enter survey name"  onChange={this.handleChange} name="survey-name" />
+                      <label>Enter Survey Title</label>
+                      <input type="text" className="form-control" id="surveyTitle" placeholder="Enter survey title"  onChange={this.handleChange} name="survey-title" />
                     </div>
-                    <div className="form-group ">
+                  </div>
+                  <div className="col-md-12">
+                    <div className="form-group">
                       <label>Choose File</label>
                       <ReactFileReader handleFiles={this.handleFiles} fileTypes={['.xlsx', '.xls']}>
                         <button className="form-control btn-primary"><span className="glyphicon glyphicon-folder-open"></span> Browse...</button>
@@ -145,8 +172,10 @@ class FileUpload extends Component {
 
 }
 
+/*
 FileUpload.propTypes = {
     surveys: PropTypes.array.isRequired
 }
+*/
 
 export default FileUpload;
