@@ -17,7 +17,7 @@ injectGlobal`
   }
 
   #app {
-    background-color: #fafafa;
+    background-color: #f2f2f2;
     min-height: 100%;
     min-width: 100%;
   }
@@ -38,7 +38,7 @@ injectGlobal`
   
   .survey-btn {
     margin-top: 40px;
-    float: right
+    float: right;
   }
   
   .Login {
@@ -55,6 +55,11 @@ injectGlobal`
      margin-top: 40%;
   }
   
+  .upload-primary {
+    float: right;
+    margin-right: 25px;
+  }
+  
   .modal-title-custom {
     font-weight: bold
   }
@@ -64,5 +69,111 @@ injectGlobal`
     margin-left: auto;
     margin-right: auto;
   }
+  
+  .switch {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 34px;
+  margin-top: 20px
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #c70b2b;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #006c68;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.inner-addon { 
+    position: relative; 
+}
+
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+.right-addon input { padding-right: 30px; }
+.right-addon .glyphicon { right: 0px;}
+
+.panel-heading a:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\\e114";    
+    float: right; 
+    color: grey; 
+}
+.panel-heading a.collapsed:after {
+    content: "\\e080";
+}
+#container{
+    padding:10px;
+    width: 90%;
+    margin-left: 5%;
+}
+.panel-body {
+    height: 300px;
+    overflow-y:auto;
+}
+.panel-heading.collapsed .fa-chevron-down,
+.panel-heading .fa-chevron-right {
+  display: none;
+}
+.panel-heading.collapsed .fa-chevron-right,
+.panel-heading .fa-chevron-down {
+  display: inline-block;
+}
+i.fa {
+  cursor: pointer;
+  margin-right: 5px;
+}
+.collapsed ~ .panel-body {
+  padding: 0;
+}
+.navbar-brand{
+ margin-bottom:10px;
+}
+
 }
 `;
