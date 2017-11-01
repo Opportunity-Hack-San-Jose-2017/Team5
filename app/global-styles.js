@@ -137,5 +137,8 @@ input:checked + .slider:before {
 }
 .right-addon input { padding-right: 30px; }
 .right-addon .glyphicon { right: 0px;}
+
+.next {
+  margin-right: 25px;
 }
 `;

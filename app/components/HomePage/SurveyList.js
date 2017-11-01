@@ -8,7 +8,6 @@ import 'react-confirm-alert/src/react-confirm-alert.css'
 
 const SurveyList = (props) => {
     function handleSwitch(e) {
-      e.preventDefault();
       console.log('The link was clicked.');
     }
 
@@ -18,7 +17,7 @@ const SurveyList = (props) => {
                 <div className="media-body">
                   <div className="col-md-1">
                     <label className="switch" title="Enable Quiz">
-                      <input type="checkbox" defaultChecked={survey.isSurveyEnabled} onChange={handleSwitch} />
+                      <input type="checkbox" defaultChecked={survey.isSurveyEnabled} onClick={handleSwitch} />
                       <div className="slider round"></div>
                     </label>
                   </div>

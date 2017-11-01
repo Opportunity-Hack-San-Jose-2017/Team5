@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import {Button, Modal} from 'react-bootstrap';
+import {Button, Modal, Pager} from 'react-bootstrap';
 import ReactFileReader from 'react-file-reader';
 import * as XLSX from 'xlsx';
 import SurveyList from '../../components/HomePage/SurveyList';
@@ -131,7 +131,6 @@ class FileUpload extends Component {
           isSurveyEnabled: this.state.isSurveyEnabled,
           postedBy: 'Allison'
         }).then(function (response) {
-          console.dir(response);
             if (response.status === 201) {
               surveys.push(response.data)
               that.setState({ surveys: surveys,
@@ -150,7 +149,6 @@ class FileUpload extends Component {
   filterSurvey (surveyTitle) {
     let filteredSurveys = this.state.surveys;
      filteredSurveys = filteredSurveys.filter(function (survey) {
-       console.log(survey)
       if (survey.surveyTitle && survey.surveyTitle.includes(surveyTitle) || surveyTitle === '') {
         return survey;
       }
@@ -205,6 +203,14 @@ class FileUpload extends Component {
           </div>
           <div className="row">
             <SurveyList surveys={this.state.filteredSurveys} onSurveyDelete={this.state.deleteSurvey} />
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <Pager>
+                <Pager.Item previous href="#">&larr; Previous Page</Pager.Item>
+                <Pager.Item next href="#">Next Page &rarr;</Pager.Item>
+              </Pager>
+            </div>
           </div>
         </div>
       </div>
