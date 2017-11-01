@@ -39,18 +39,18 @@ router.get('/questions', (req, res) => {
 });
 
 // GET for questions being taken
-router.get('/questions/:id', (req, res) => {
-    var qid = req.params.id;
-    const query = {};
-    query[qid] = {'$exists': 1};
-    db.collection(SURVEY_DATA_COLLECTION).find(query).toArray(function(err, docs) {
-        if (err) {
-            handleError(res, err.message, 'Failed to get questions.');
-        } else {
-            res.status(200).json(docs);
-        }
-    });
-});
+// router.get('/questions/:id', (req, res) => {
+//     var qid = req.params.id;
+//     const query = {};
+//     query[qid] = {'$exists': 1};
+//     db.collection(SURVEY_DATA_COLLECTION).find(query).toArray(function(err, docs) {
+//         if (err) {
+//             handleError(res, err.message, 'Failed to get questions.');
+//         } else {
+//             res.status(200).json(docs);
+//         }
+//     });
+// });
 
 // POST for surveyTaken
 router.post('/surveyTaken', (req, res) => {
