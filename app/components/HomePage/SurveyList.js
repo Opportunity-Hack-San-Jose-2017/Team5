@@ -7,11 +7,11 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 
 const SurveyList = (props) => {
-
     function handleSwitch(e) {
       e.preventDefault();
       console.log('The link was clicked.');
     }
+  
     const SurveyItems = props.surveys.map((survey) => {
         return (
             <div className="media" key={survey._id}>
@@ -47,7 +47,13 @@ const SurveyList = (props) => {
 
     return (
         <div className="col-md-12">
-            {SurveyItems}
+            {props.surveys.length == 0 ? <div className="media">
+                <div className="media-body">
+                    <div className="col-lg-12">
+                        <h1>No survey result found</h1>
+                    </div>
+                </div>
+            </div> : SurveyItems}
         </div>
     );
 }
