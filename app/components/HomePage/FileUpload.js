@@ -7,6 +7,7 @@ import ReactFileReader from 'react-file-reader';
 import * as XLSX from 'xlsx';
 import SurveyList from '../../components/HomePage/SurveyList';
 import NavBar from '../../components/NavBar';
+import SearchBar from '../../components/SearchBar';
 
 
 //let _surveyData = [];
@@ -17,17 +18,21 @@ class FileUpload extends Component {
 
     this.state = {
       surveys: [],
+      filteredSurveys: [],
       showModal: false,
       surveyTitle: '',
       surveyData: undefined,
-      isSurveyEnabled: false
+      isSurveyEnabled: false,
+      hasResults: false
     };
 
     this.getSurveys('Allison');
     this.handleFiles = this.handleFiles.bind(this)
     this.saveSurvey = this.saveSurvey.bind(this)
-    this.open = this.open.bind(this)
-    this.close = this.close.bind(this)
+    this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
+    this.filterSurvey = this.filterSurvey.bind(this);
+    this.deleteSurvey = this.deleteSurvey.bind(this);
   }
 
   getSurveys (teacherName) {
@@ -37,7 +42,8 @@ class FileUpload extends Component {
       if (response.status === 200) {
         // console.dir(response)
         this.setState({
-          surveys: response.data
+          surveys: response.data,
+          filteredSurveys: response.data
         });
       } else {
         alert('Something went wrong');
@@ -53,6 +59,7 @@ class FileUpload extends Component {
     this.setState({surveyTitle: ''});
     this.setState({surveyData: undefined});
     this.setState({isSurveyEnabled: false});
+    this.setState({hasResults: false});
     this.setState({ showModal: true });
   }
 
@@ -95,6 +102,21 @@ class FileUpload extends Component {
     reader.readAsBinaryString(files[0]);
   }
 
+  deleteSurvey (surveyId) {
+    const canDelete = confirm('Are you sure you want to delete this survey?');
+    if (!canDelete) {
+      return;
+    }
+    axios.post('/survey/getAllSurveys', {
+      teacherName,
+    }).then((response) => {
+      console.dir(response);
+    }).catch((error) => {
+      alert('Something went wrong');
+      console.log(error);
+    });
+  }
+
   saveSurvey (e) {
     e.preventDefault();
     if (this.state.surveyData && this.state.surveyTitle !== '') {
@@ -105,13 +127,16 @@ class FileUpload extends Component {
         axios.post('/survey/postExcelData', {
           surveyTitle: surveyTitle,
           surveyQuestions: this.state.surveyData,
+          hasResults: this.state.hasResults,
           isSurveyEnabled: this.state.isSurveyEnabled,
           postedBy: 'Allison'
         }).then(function (response) {
           console.dir(response);
             if (response.status === 201) {
               surveys.push(response.data)
-              that.setState({ surveys: surveys });
+              that.setState({ surveys: surveys,
+                filteredSurveys: surveys
+              });
             }
         }).catch(function (error) {
             alert('Something went wrong at the server side');
@@ -122,15 +147,31 @@ class FileUpload extends Component {
     }
   }
 
+  filterSurvey (surveyTitle) {
+    let filteredSurveys = this.state.surveys;
+     filteredSurveys = filteredSurveys.filter(function (survey) {
+       console.log(survey)
+      if (survey.surveyTitle && survey.surveyTitle.includes(surveyTitle) || surveyTitle === '') {
+        return survey;
+      }
+    });
+    this.setState({
+      filteredSurveys: filteredSurveys
+    })
+
+  }
+
   render() {
     return(
       <div>
       <NavBar />
         <div className="container">
           <div className="row">
-            <div className="col-md-12">
+            <SearchBar onSearchTermChange={this.filterSurvey} />
+            <div className="col-md-offset-3 col-md-4">
               <Button
                 bsStyle="primary"
+                bsClass="btn btn-primary upload"
                 onClick={this.open}
               >  <span className="glyphicon glyphicon-plus"></span> Upload Survey </Button>
             </div>
@@ -163,7 +204,7 @@ class FileUpload extends Component {
             </Modal>
           </div>
           <div className="row">
-            <SurveyList surveys={this.state.surveys}/>
+            <SurveyList surveys={this.state.filteredSurveys} onSurveyDelete={this.state.deleteSurvey} />
           </div>
         </div>
       </div>

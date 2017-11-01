@@ -97,13 +97,29 @@ router.post('/getAllSurveys', (req, res) => {
   });
 });
 
-router.put('/updateSurvey/:survey', (req, res) => {
-  console.dir(req.params.survey);
-  if(!req.body || req.body.length == 0) {
+router.post('/updateSurvey', (req, res) => {
+
+  if(!req.body || req.body.length == 0 || req.body._id) {
     res.status(400).send('Invalid survey id');
     return ;
   }
 
+});
+
+router.post('deleteSurvey', (req, res) => {
+  if(!req.body || req.body.length == 0 || req.body._id) {
+    res.status(400).send('Invalid survey id');
+    return ;
+  }
+
+  db.collection(SURVEY_DATA_COLLECTION).deleteOne({ _id : req.body._id }, function(err, result) {
+    if (err) {
+      res.status(400).send(err);
+      res.send()
+    } else {
+      res.status(201).send(result);
+    }
+  });
 });
 
 router.post('/postExcelData', (req, res) => {

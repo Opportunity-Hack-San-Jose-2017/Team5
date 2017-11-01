@@ -17,7 +17,7 @@ injectGlobal`
   }
 
   #app {
-    background-color: #f2f2f2;
+    background-color: #fafafa;
     min-height: 100%;
     min-width: 100%;
   }
@@ -37,8 +37,8 @@ injectGlobal`
   }
   
   .survey-btn {
-    margin-top: 22px;
-    float: right
+    margin-top: 40px;
+    float: right;
   }
   
   .Login {
@@ -53,6 +53,11 @@ injectGlobal`
   
   .well-custom {
      margin-top: 40%;
+  }
+  
+  .upload-primary {
+    float: right;
+    margin-right: 25px;
   }
   
   .modal-title-custom {
@@ -121,50 +126,16 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.panel-heading a:after {
-    font-family: 'Glyphicons Halflings';
-    content: "\\e114";    
-    float: right; 
-    color: grey; 
-}
-.panel-heading a.collapsed:after {
-    content: "\\e080";
-}
-#container{
-    padding:10px;
-    width: 90%;
-    margin-left: 5%;
+.inner-addon { 
+    position: relative; 
 }
 
-.panel-body {
-    height: 300px;
-    overflow-y:auto;
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
 }
-
-
-.panel-heading.collapsed .fa-chevron-down,
-.panel-heading .fa-chevron-right {
-  display: none;
-}
-
-.panel-heading.collapsed .fa-chevron-right,
-.panel-heading .fa-chevron-down {
-  display: inline-block;
-}
-
-i.fa {
-  cursor: pointer;
-  margin-right: 5px;
-}
-
-.collapsed ~ .panel-body {
-  padding: 0;
-}
-
-.navbar-brand{
- margin-bottom:10px;
-}
-
-
+.right-addon input { padding-right: 30px; }
+.right-addon .glyphicon { right: 0px;}
 }
 `;
