@@ -33,11 +33,14 @@ export default function App() {
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={auth.login} />
+        <Route exact path="/" component={HomePage} />
         <Route exact path="/login" component={auth.login} />
         <Route exact path="/results/:surveyName" component={ResultsPage} />
           <Route exact path="/home" component={HomePage} />
-          <Route exact path="/callback" component={HomePage} />
+          <Route exact path="/callback" render={(props) => {
+              handleAuthentication(props);
+              return <HomePage auth={auth} {...props} />
+          }}/>
         <Route component={NotFoundPage} />
       </Switch>
     </div>
