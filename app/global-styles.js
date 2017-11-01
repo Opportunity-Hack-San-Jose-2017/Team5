@@ -37,8 +37,8 @@ injectGlobal`
   }
   
   .survey-btn {
-    margin-top: 22px;
-    float: right
+    margin-top: 40px;
+    float: right;
   }
   
   .Login {
@@ -53,6 +53,11 @@ injectGlobal`
   
   .well-custom {
      margin-top: 40%;
+  }
+  
+  .upload-primary {
+    float: right;
+    margin-right: 25px;
   }
   
   .modal-title-custom {
@@ -120,5 +125,17 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.inner-addon { 
+    position: relative; 
+}
+
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+.right-addon input { padding-right: 30px; }
+.right-addon .glyphicon { right: 0px;}
 }
 `;
