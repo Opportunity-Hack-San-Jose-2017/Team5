@@ -17,7 +17,7 @@ injectGlobal`
   }
 
   #app {
-    background-color: #fafafa;
+    background-color: #f2f2f2;
     min-height: 100%;
     min-width: 100%;
   }
@@ -138,7 +138,44 @@ input:checked + .slider:before {
 .right-addon input { padding-right: 30px; }
 .right-addon .glyphicon { right: 0px;}
 
+.panel-heading a:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\\e114";    
+    float: right; 
+    color: grey; 
+}
+.panel-heading a.collapsed:after {
+    content: "\\e080";
+}
+#container{
+    padding:10px;
+    width: 90%;
+    margin-left: 5%;
+}
+.panel-body {
+    height: 300px;
+    overflow-y:auto;
+}
+.panel-heading.collapsed .fa-chevron-down,
+.panel-heading .fa-chevron-right {
+  display: none;
+}
+.panel-heading.collapsed .fa-chevron-right,
+.panel-heading .fa-chevron-down {
+  display: inline-block;
+}
+i.fa {
+  cursor: pointer;
+  margin-right: 5px;
+}
+.collapsed ~ .panel-body {
+  padding: 0;
+}
+.navbar-brand{
+ margin-bottom:10px;
+}
 .next {
   margin-right: 25px;
+}
 }
 `;

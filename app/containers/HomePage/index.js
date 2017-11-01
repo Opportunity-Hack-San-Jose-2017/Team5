@@ -15,7 +15,7 @@ import FileUpload from '../../components/HomePage/FileUpload';
 
 
 export default function HomePage() { // eslint-disable-line react/prefer-stateless-function
-  return (
-    <FileUpload />
-  );
+    return (
+        <FileUpload />
+    );
 }
