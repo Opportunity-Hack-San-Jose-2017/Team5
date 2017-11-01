@@ -13,7 +13,6 @@
 import React from 'react';
 import FileUpload from '../../components/HomePage/FileUpload';
 
-const surveys = []
 
 export default function HomePage() { // eslint-disable-line react/prefer-stateless-function
   return (
