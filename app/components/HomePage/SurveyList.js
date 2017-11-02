@@ -3,11 +3,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
+import FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
 
 const SurveyList = (props) => {
 
     function handleSwitch(e) {
         console.log('The link was clicked.');
+    }
+
+    function downloadResults(e) {
+        const surveyKey = e.target.id;
+        axios({
+            method:'get',
+            url: '/survey/download/' + surveyKey
+        }).then(function (response) {
+            if (response.status == 200)
+            {
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.json_to_sheet(response.data);
+                const ws_name = "Survey_Results";
+                XLSX.utils.book_append_sheet(wb, ws, ws_name);
+                const wopts = { bookType:'xlsx', bookSST:false, type:'binary' };
+
+                var wbout = XLSX.write(wb, wopts);
+
+                function s2ab(s) {
+                    var buf = new ArrayBuffer(s.length);
+                    var view = new Uint8Array(buf);
+                    for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+                    return buf;
+                }
+
+                /* the saveAs call downloads a file on the local machine */
+                FileSaver.saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "test.xlsx");
+            }
+        })
+        .catch(function (error) {
+            console.log('cusom error ' + error);
+        });
     }
 
     const SurveyItems = props.surveys.map((survey) => {
@@ -33,9 +69,9 @@ const SurveyList = (props) => {
                         </ul>
                     </div>
                     <div className="col-md-5">
-                        <button className="btn btn-warning survey-btn btn-sm">Remove</button>
+                        <button className="btn btn-warning survey-btn btn-sm" data-tag={survey._id}  >Remove</button>
                         {
-                            survey.hasResults ? null : <button  className="btn btn-success  survey-btn btn-sm">Download Results</button>
+                            survey.hasResults ? null : <button  className="btn btn-success  survey-btn btn-sm" id={survey._id} onClick={downloadResults}>Download Results</button>
                         }
                         <Link to={"/results/" + survey._id} className="btn btn-default btn-sm survey-btn">View Results</Link>
                     </div>
@@ -46,13 +82,13 @@ const SurveyList = (props) => {
 
     return (
         <div className="col-md-12">
-            {props.surveys.length == 0 ? <div className="media">
+            { props.surveys.length == 0 ? <div className="media">
                 <div className="media-body">
                     <div className="col-lg-12">
                         <h1>No survey result found</h1>
                     </div>
                 </div>
-            </div> : SurveyItems}
+            </div> : SurveyItems }
         </div>
     );
 }
