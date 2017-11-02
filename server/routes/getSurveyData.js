@@ -41,7 +41,7 @@ router.get('/questions', (req, res) => {
 // GET for questions being taken
 router.get('/questions/:id', (req, res) => {
     var qid = req.params.id;
-    db.collection(SURVEY_DATA_COLLECTION).find({"key": {$eq: qid}}).toArray(function(err, docs) {
+    db.collection(SURVEY_DATA_COLLECTION).find({"_id": {$eq: qid}}).toArray(function(err, docs) {
         if (err) {
             handleError(res, err.message, 'Failed to get questions.');
         } else {
