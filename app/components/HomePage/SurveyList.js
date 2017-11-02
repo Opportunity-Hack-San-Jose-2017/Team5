@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
 const SurveyList = (props) => {
+
     function handleSwitch(e) {
-        e.preventDefault();
         console.log('The link was clicked.');
     }
 

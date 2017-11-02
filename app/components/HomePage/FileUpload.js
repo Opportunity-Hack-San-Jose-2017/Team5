@@ -205,13 +205,11 @@ class FileUpload extends Component {
             <SurveyList surveys={this.state.filteredSurveys} onSurveyDelete={this.state.deleteSurvey} />
           </div>
           <div className="row">
-            <div className="col-md-12">
               <Pager>
                 <Pager.Item previous href="#">&larr; Previous Page</Pager.Item>
                 <Pager.Item next href="#">Next Page &rarr;</Pager.Item>
               </Pager>
             </div>
-          </div>
         </div>
       </div>
     )
