@@ -134,7 +134,7 @@ class FileUpload extends Component {
           postedBy: 'Allison'
         }).then(function (response) {
             if (response.status === 201) {
-              surveys.push(response.data)
+              surveys.unshift(response.data);
               that.setState({ surveys: surveys,
                 filteredSurveys: surveys
               });
