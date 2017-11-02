@@ -55,7 +55,7 @@ router.post('/surveyTaken', (req, res) => {
     console.log('inside Survey taken');
     console.log(req.body);
 
-    const surveyId = req.body.surveyId;
+    const surveyId = req.body.answers.surveyId;
     const result = {};
     result[surveyId] = req.body;
 
