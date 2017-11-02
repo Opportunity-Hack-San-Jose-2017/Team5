@@ -85,13 +85,15 @@ class FileUpload extends Component {
       });
       const XL_row_object = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
       const newJson = [];
-      for(let k in XL_row_object) {
+      let count = 1;
+      XL_row_object.forEach(function (row) {
         let temp = {};
-        for(let i = 0 ; i < Object.keys(XL_row_object[k]).length ; i++){
-          temp[Object.keys(XL_row_object[k])[i].toString().toLowerCase().replace(/ +/g, "")] = XL_row_object[k][Object.keys(XL_row_object[k])[i]];
-        }
-        newJson.push(temp)
-      }
+        temp['qid'] = count++;
+        Object.keys(row).forEach(function (key) {
+          temp[key.toString().toLowerCase().replace(/ +/g, "")] = row[key];
+        });
+        newJson.push(temp);
+      });
       that.setState({
         surveyData: newJson
       });
