@@ -39,36 +39,27 @@ router.get('/questions', (req, res) => {
 });
 
 // GET for questions being taken
-// router.get('/questions/:id', (req, res) => {
-//     var qid = req.params.id;
-//     const query = {};
-//     query[qid] = {'$exists': 1};
-//     db.collection(SURVEY_DATA_COLLECTION).find(query).toArray(function(err, docs) {
-//         if (err) {
-//             handleError(res, err.message, 'Failed to get questions.');
-//         } else {
-//             res.status(200).json(docs);
-//         }
-//     });
-// });
+router.get('/questions/:id', (req, res) => {
+    var qid = req.params.id;
+    db.collection(SURVEY_DATA_COLLECTION).find({"key": {$eq: qid}}).toArray(function(err, docs) {
+        if (err) {
+            handleError(res, err.message, 'Failed to get questions.');
+        } else {
+            res.status(200).json(docs);
+        }
+    });
+});
 
 // POST for surveyTaken
 router.post('/surveyTaken', (req, res) => {
     console.log('inside Survey taken');
-    console.log(req);
-    if (!(req.body.firstName || req.body.lastName || req.body.grade || req.body.course || req.body.survey)) {
-        handleError(res, 'Invalid user input', 'Mandatory fields must be filled.', 400);
-    }
+    console.log(req.body);
 
-    const newUser = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        grade: req.body.grade,
-        course: req.body.course,
-        survey: req.body.survey
-    }
+    const surveyId = req.body.surveyName;
+    const result = {};
+    result[surveyId] = req.body;
 
-    db.collection(USER_SURVEY_TAKEN).insertOne(newUser, function(err, doc) {
+    db.collection(USER_SURVEY_TAKEN).insertOne(result, function(err, doc) {
         if (err) {
             handleError(res, err.message, 'Failed to POST survey taken data.');
         } else {
