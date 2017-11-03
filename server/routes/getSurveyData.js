@@ -77,6 +77,8 @@ router.post('/surveyTaken', (req, res) => {
             responses = doc[0];
         } else {
             responses = {};
+        }
+        if(!responses[surveyId]) {
             questionRow.firstName = "";
             questionRow.lastName = "";
             result[surveyId]['questions'].forEach(question => {
