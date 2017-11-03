@@ -12,7 +12,8 @@ const XLSX = require('xlsx');
 // Collections
 const DATA_COLLECTION = 'userdetails';
 const SURVEY_DATA_COLLECTION = 'surveydata';
-const USER_SURVEY_TAKEN = 'surveytakendata'
+const USER_SURVEY_TAKEN = 'surveytakendata';
+
 
 mongo.connect((_db) => {
     db = _db;
@@ -56,7 +57,7 @@ router.post('/surveyTaken', (req, res) => {
     console.log('inside Survey taken');
     console.log(req.body);
 
-    const surveyId = req.body.surveyName;
+    const surveyId = req.body.answers.surveyId;
     const result = {};
     result[surveyId] = req.body;
 
@@ -127,7 +128,137 @@ router.get('/download/:surveyKey', (req, res) => {
             res.status(200).json(docs);
         }
     });*/
-   const data = [{"quid":1,"competency":"Motivate","question":"Think about how you remembered and followed directions today. What is a strategy you used to do this well?","questiontype":"Text Input"},{"quid":2,"competency":"Motivate","question":"I feel excited by the work in this project","questiontype":"Scale ","responseoptions":"Never, On Occasion, Some of the time, All of the time"},{"quid":3,"competency":"Motivate","question":"What is the one thing you\"d like to know about our research topic?","questiontype":"Text Input"},{"quid":4,"competency":"Engage","question":"We learned about a complicated community problem today. How confident are you that you can understand this challenge?","questiontype":"Text Input"},{"quid":5,"competency":"Engage","question":"I feel eager to participate in the activities we\"re doing as part of this project","questiontype":"Scale ","responseoptions":"Not at all eager, slightly eager, somewhat eager, quite eager, extremely eager"},{"quid":6,"competency":"Create","question":"I am capable of learning anything","questiontype":"Yes/No"}]
+   const data = [{
+       "firstName": "Sid",
+       "lastName": "Malkireddy",
+       "surveyId": "1234",
+       "teacherName": "Iron Man",
+       "questions": [{
+           "qid": 1,
+           "competency": "Motivate",
+           "question": "Think about how you remembered and followed directions today. What is a strategy you used to do this well?",
+           "questiontype": "text",
+           "answer": null
+       }, {
+           "qid": 2,
+           "competency": "Motivate",
+           "question": "I feel excited by the work in this project",
+           "questiontype": "slider",
+           "responseoptions": "Never, On Occasion, Some of the time, All of the time",
+           "answer": "NOne of the time"
+       }, {
+           "qid": 3,
+           "competency": "Motivate",
+           "question": "What is the one thing you’d like to know about our research topic?",
+           "questiontype": "text",
+           "answer": "Hello "
+       }, {
+           "qid": 4,
+           "competency": "Engage",
+           "question": "We learned about a complicated community problem today. How confident are you that you can understand this challenge?",
+           "questiontype": "text",
+           "answer": null
+       }, {
+           "qid": 5,
+           "competency": "Engage",
+           "question": "I feel eager to participate in the activities we’re doing as part of this project",
+           "questiontype": "slider",
+           "responseoptions": "Not at all eager, slightly eager, somewhat eager, quite eager, extremely eager",
+           "answer": null
+       }, {
+           "qid": 6,
+           "competency": "Create",
+           "question": "I am capable of learning anything",
+           "questiontype": "boolean",
+           "answer": "No"
+       }, {
+           "qid": 7,
+           "competency": "Create",
+           "question": "I am interested in the problems we’re exploring as part of this project",
+           "questiontype": "slider",
+           "responseoptions": "Never, On Occasion, Some of the time, All of the time",
+           "answer": "None of the time"
+       }, {
+           "qid": 8,
+           "competency": "Teachback",
+           "question": "How confident are you that you can meet the presentation goals of this project ",
+           "questiontype": "text",
+           "responseoptions": "Not at all confident, slightly confident, somewhat confident,  quite confident , extremely confident",
+           "answer": "Hello "
+       }, {
+           "qid": 9,
+           "competency": "Reflect",
+           "question": "Describe one way you effectively worked with your group",
+           "questiontype": "text",
+           "answer": null
+       }]
+   },
+       {
+           "firstName": "Sid",
+           "lastName": "Someone",
+           "surveyId": "1234",
+           "teacherName": "Iron Man",
+           "questions": [{
+               "qid": 1,
+               "competency": "Motivate",
+               "question": "Think about how you remembered and followed directions today. What is a strategy you used to do this well?",
+               "questiontype": "text",
+               "answer": null
+           }, {
+               "qid": 2,
+               "competency": "Motivate",
+               "question": "I feel excited by the work in this project",
+               "questiontype": "slider",
+               "responseoptions": "Never, On Occasion, Some of the time, All of the time",
+               "answer": "NOne of the time"
+           }, {
+               "qid": 3,
+               "competency": "Motivate",
+               "question": "What is the one thing you’d like to know about our research topic?",
+               "questiontype": "text",
+               "answer": "Hello "
+           }, {
+               "qid": 4,
+               "competency": "Engage",
+               "question": "We learned about a complicated community problem today. How confident are you that you can understand this challenge?",
+               "questiontype": "text",
+               "answer": null
+           }, {
+               "qid": 5,
+               "competency": "Engage",
+               "question": "I feel eager to participate in the activities we’re doing as part of this project",
+               "questiontype": "slider",
+               "responseoptions": "Not at all eager, slightly eager, somewhat eager, quite eager, extremely eager",
+               "answer": null
+           }, {
+               "qid": 6,
+               "competency": "Create",
+               "question": "I am capable of learning anything",
+               "questiontype": "boolean",
+               "answer": "No"
+           }, {
+               "qid": 7,
+               "competency": "Create",
+               "question": "I am interested in the problems we’re exploring as part of this project",
+               "questiontype": "slider",
+               "responseoptions": "Never, On Occasion, Some of the time, All of the time",
+               "answer": "None of the time"
+           }, {
+               "qid": 8,
+               "competency": "Teachback",
+               "question": "How confident are you that you can meet the presentation goals of this project ",
+               "questiontype": "text",
+               "responseoptions": "Not at all confident, slightly confident, somewhat confident,  quite confident , extremely confident",
+               "answer": "Hello "
+           }, {
+               "qid": 9,
+               "competency": "Reflect",
+               "question": "Describe one way you effectively worked with your group",
+               "questiontype": "text",
+               "answer": null
+           }]
+       }
+   ]
     res.status(200).json(data);
 });
 
@@ -154,6 +285,24 @@ router.post('/postExcelData', (req, res) => {
             res.status(400).send(err);
         } else {
             res.status(201).json(survey);
+        }
+    });
+});
+
+
+router.get('/surveyResults/:surveyKey', (req, res) => {
+
+   console.log('survey Key' + req.params.surveyKey);
+
+    if(!req.params.surveyKey) {
+        res.status(400).send('Invalid Survey Key');
+    }
+    db.collection().find({}).toArray(function(err, docs) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        } else {
+            res.status(200).json(docs);
         }
     });
 });
