@@ -69,11 +69,15 @@ const SurveyList = (props) => {
                         </ul>
                     </div>
                     <div className="col-md-5">
-                        <button className="btn btn-warning survey-btn btn-sm" data-tag={survey._id}  >Remove</button>
+                        <Link to={"/results/" + survey._id} className="btn btn-default btn-sm survey-btn viewResults"> <i className="fa fa-eye" aria-hidden="true"></i>View Results</Link>
+
                         {
-                            survey.hasResults ? null : <button  className="btn btn-success  survey-btn btn-sm" id={survey._id} onClick={downloadResults}>Download Results</button>
+                            survey.hasResults ? null : <button  className="btn btn-success downloadResults survey-btn btn-sm"><i className="fa fa-cloud-download" aria-hidden="true"></i>
+                                Download Results</button>
                         }
-                        <Link to={"/results/" + survey._id} className="btn btn-default btn-sm survey-btn">View Results</Link>
+
+                        <button className="btn btn-danger deleteButton" href="#">
+                            <i className="fa fa-trash" aria-hidden="true"></i> Delete</button>
                     </div>
                 </div>
             </div>
@@ -82,13 +86,13 @@ const SurveyList = (props) => {
 
     return (
         <div className="col-md-12">
-            { props.surveys.length == 0 ? <div className="media">
+            {props.surveys.length == 0 ? <div className="media">
                 <div className="media-body">
                     <div className="col-lg-12">
                         <h1>No survey result found</h1>
                     </div>
                 </div>
-            </div> : SurveyItems }
+            </div> : SurveyItems}
         </div>
     );
 }

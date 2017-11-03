@@ -18,7 +18,7 @@ const NavBar = () => {
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav navbar-right">
                 <li className="dropdown">
-                  <a href="/home" className="dropdown-toggle" data-toggle="dropdown">
+                  <a href="/home" className="dropdown-toggle login-navbar" data-toggle="dropdown">
                     <span className="glyphicon glyphicon-user"></span>
                     <strong>Login</strong>
                   </a>
