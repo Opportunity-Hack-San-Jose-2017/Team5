@@ -212,7 +212,6 @@ router.post('deleteSurvey', (req, res) => {
 });
 
 router.get('/download/:surveyKey', (req, res) => {
-    console.log('key ' + req.params.surveyKey);
     let key = req.params.surveyKey;
     if (!key) {
         res.status(400).send('Invalid Survey key');
@@ -220,10 +219,9 @@ router.get('/download/:surveyKey', (req, res) => {
     const query = {};
     query[key] = { $exists: true}
     db.collection(SURVEY_RESPONSES).find(query).toArray(function(err, docs) {
-        console.log(docs);
         if (err) {
             res.status(400).send(err);
-        } else if (docs == null || docs.length == 0) {
+        } else if (docs.length == 0) {
             res.status(204).send('No Results Found!!');
         } else {
             res.status(200).json(docs);
@@ -251,10 +249,23 @@ router.post('/postExcelData', (req, res) => {
     db.collection(SURVEY_DATA_COLLECTION).insertOne(survey, function(err, doc) {
         if (err) {
             console.log(err);
-            //handleError(res, err.message, 'Failed to POST survey taken data.');
             res.status(400).send(err);
         } else {
             res.status(201).json(survey);
+        }
+    });
+});
+
+router.get('/surveyResults/:surveyKey', (req, res) => {
+    if(!req.params.surveyKey) {
+        res.status(400).send('Invalid Survey Key');
+    }
+    db.collection(GRAPHS_DATA).find({}).toArray(function(err, docs) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        } else {
+            res.status(200).json(docs);
         }
     });
 });
