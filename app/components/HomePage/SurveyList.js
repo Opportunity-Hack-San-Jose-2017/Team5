@@ -22,8 +22,9 @@ const SurveyList = (props) => {
         }).then(function (response) {
             if (response.status == 200)
             {
+                console.log()
                 const wb = XLSX.utils.book_new();
-                const ws = XLSX.utils.json_to_sheet(response.data);
+                const ws = XLSX.utils.json_to_sheet(response.data[0][surveyKey]);
                 const ws_name = "Survey_Results";
                 XLSX.utils.book_append_sheet(wb, ws, ws_name);
                 const wopts = { bookType:'xlsx', bookSST:false, type:'binary' };
@@ -38,7 +39,7 @@ const SurveyList = (props) => {
                 }
 
                 /* the saveAs call downloads a file on the local machine */
-                FileSaver.saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "test.xlsx");
+                FileSaver.saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "Results.xlsx");
             }
         })
         .catch(function (error) {
@@ -72,7 +73,7 @@ const SurveyList = (props) => {
                         <Link to={"/results/" + survey._id} className="btn btn-default btn-sm survey-btn viewResults"> <i className="fa fa-eye" aria-hidden="true"></i>View Results</Link>
 
                         {
-                            survey.hasResults ? null : <button  className="btn btn-success downloadResults survey-btn btn-sm"><i className="fa fa-cloud-download" aria-hidden="true"></i>
+                            survey.hasResults ? null : <button  className="btn btn-success downloadResults survey-btn btn-sm" id={survey._id} onClick={downloadResults}><i className="fa fa-cloud-download" aria-hidden="true"></i>
                                 Download Results</button>
                         }
 

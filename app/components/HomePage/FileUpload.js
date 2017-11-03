@@ -23,7 +23,7 @@ class FileUpload extends Component {
       hasResults: false
     };
 
-    this.getSurveys('Allison');
+    this.getSurveys('Admin');
     this.handleFiles = this.handleFiles.bind(this)
     this.saveSurvey = this.saveSurvey.bind(this)
     this.open = this.open.bind(this);
@@ -55,7 +55,7 @@ class FileUpload extends Component {
   open = () => {
     this.setState({surveyTitle: ''});
     this.setState({surveyData: undefined});
-    this.setState({isSurveyEnabled: false});
+    this.setState({isSurveyEnabled: true});
     this.setState({hasResults: false});
     this.setState({ showModal: true });
   }
@@ -128,7 +128,7 @@ class FileUpload extends Component {
           surveyQuestions: this.state.surveyData,
           hasResults: this.state.hasResults,
           isSurveyEnabled: this.state.isSurveyEnabled,
-          postedBy: 'Allison'
+          postedBy: 'Admin'
         }).then(function (response) {
             if (response.status === 201) {
               surveys.unshift(response.data);
