@@ -162,7 +162,8 @@ function insertResults(req, res){
     //this will update the collection with the new data or inser the doc is it does not exist.
     db.collection(GRAPHS_DATA).update( {}, RESULTS_DATA, { upsert: true }, function(err, doc) {
         if (err) {
-            handleError(res, err.message, 'Failed to POST survey taken data.');
+            console.log("error in graphs Data:", err.message );
+            handleError(res, err.message, 'Failed to POST graphs data.');
         } else {
             res.status(201).json(doc);
         }
