@@ -38,7 +38,8 @@ injectGlobal`
   
   .survey-btn {
     margin-top: 40px;
-    float: right;
+    font-weight: 400;
+    
   }
   
   .Login {
@@ -58,6 +59,7 @@ injectGlobal`
   .upload-primary {
     float: right;
     margin-right: 25px;
+    border-radius: 25px;
   }
   
   .modal-title-custom {
@@ -176,6 +178,35 @@ i.fa {
 }
 .next {
   margin-right: 25px;
+}
+.deleteButton {
+	background-color: #c60e2d;
+    border-color: #c60e2d;
+    border-radius: 25px;
+    margin-left: 333px;
+    margin-top: -35px;
+    margin-bottom: 21px;
+    padding-bottom: 8px;
+    font-size: 13px;
+}
+.downloadResults{
+	margin-left: 10px;
+    margin-left: 7px;
+    border-radius: 25px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+    font-size: 14px;
+    display: inline-block;
+}
+.viewResults{
+	margin-left: 46px;
+    border-radius: 25px;
+    display: inline-block;
+    font-size: 14px;
+    padding-bottom: 8px;
+}
+.login-navbar{
+    display:none !important;
 }
 }
 `;

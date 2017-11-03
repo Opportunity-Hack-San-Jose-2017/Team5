@@ -7,12 +7,15 @@ const moment = require('moment');
 const router = express.Router();
 const mongo = require('../mongo');
 const uid = require('uid2');
-const XLSX = require('xlsx');
+const sentiment = require('node-sentiment');
 
 // Collections
 const DATA_COLLECTION = 'userdetails';
 const SURVEY_DATA_COLLECTION = 'surveydata';
-const USER_SURVEY_TAKEN = 'surveytakendata'
+const USER_SURVEY_TAKEN = 'surveytakendata';
+const GRAPHS_DATA = 'graphsData';
+const SURVEY_RESPONSES = 'surveyResponses';
+let RESULTS_DATA = {};
 
 mongo.connect((_db) => {
     db = _db;
@@ -53,22 +56,119 @@ router.get('/questions/:id', (req, res) => {
 
 // POST for surveyTaken
 router.post('/surveyTaken', (req, res) => {
-    console.log('inside Survey taken');
-    console.log(req.body);
+    const surveyId = req.body.answers.surveyId;
+    const result = {};
+    result[surveyId] = req.body.answers;
+    let responses;
+    let questionRow = {};
+    if(Object.keys(RESULTS_DATA).length === 0) {
+        db.collection(GRAPHS_DATA).find({}).toArray(function(err, doc) {
+            if(doc[0]) {
+                RESULTS_DATA = doc[0]
+            };
+            insertResults(req, res);
+        });
+    } else {
+        insertResults(req, res);
+    }
+    db.collection(SURVEY_RESPONSES).find({}).toArray(function(err, doc) {
+        if(doc[0]) {
+            responses = doc[0];
+        } else {
+            responses = {};
+        }
+        if(!responses[surveyId]) {
+            questionRow.firstName = "";
+            questionRow.lastName = "";
+            result[surveyId]['questions'].forEach(question => {
+                questionRow[question['qid']] = question['question']
+            });
+        }
+        result[surveyId]['questions'].forEach(question => {
+            result[surveyId][question['qid']] = question['answer']
+        });
+        delete result[surveyId]['questions'];
+        delete result[surveyId]['teacherName'];
+        delete result[surveyId]['surveyId'];
+        if(responses[surveyId]) {
+            responses[surveyId].push(result[surveyId]);
+        } else {
+            responses[surveyId] = [];
+            responses[surveyId].push(questionRow);
+            responses[surveyId].push(result[surveyId]);
+        }
+        db.collection(SURVEY_RESPONSES).update( {}, responses, { upsert: true }, function(err, doc) {
+            if (err) {
+                console.log( err.message, 'Failed to POST survey taken data.');
+            } else {
+                console.log('Updated SUccessfully');
+            }
+        });
+    });
 
-    const surveyId = req.body.surveyName;
+});
+
+function insertResults(req, res){
+    const surveyId = req.body.answers.surveyId;
     const result = {};
     result[surveyId] = req.body;
+    if(!RESULTS_DATA.hasOwnProperty(surveyId)) {
+        RESULTS_DATA[surveyId] = {};
+    }
 
-    db.collection(USER_SURVEY_TAKEN).insertOne(result, function(err, doc) {
+    result[surveyId].answers['questions'].forEach(question => {
+        if(!RESULTS_DATA[surveyId].hasOwnProperty(question['qid'])) {
+            RESULTS_DATA[surveyId][question['qid']] = {};
+            RESULTS_DATA[surveyId][question['qid']]['type'] = question['questiontype'];
+            RESULTS_DATA[surveyId][question['qid']]['question'] = question['question'];
+            RESULTS_DATA[surveyId][question['qid']]['options'] = {};
+        }
+        if(question['questiontype'] !== 'text') {
+            if(RESULTS_DATA[surveyId][question['qid']]['options'][question['answer']]) {
+                RESULTS_DATA[surveyId][question['qid']]['options'][question['answer']] = RESULTS_DATA[surveyId][question['qid']]['options'][question['answer']] + 1;
+            } else {
+                RESULTS_DATA[surveyId][question['qid']]['options'][question['answer']] = 1
+            }
+        } else {
+
+            /* Sentiment Analysis Starts */
+
+            let ans = question['answer'];
+
+            // Flow if user answered!
+            if(ans) {
+                let options = RESULTS_DATA[surveyId][question['qid']]['options'];
+                let vote = sentiment(ans).vote;
+
+                if (RESULTS_DATA[surveyId][question['qid']]['options'][vote]) {
+                    RESULTS_DATA[surveyId][question['qid']]['options'][vote] = RESULTS_DATA[surveyId][question['qid']]['options'][vote] + 1;
+                } else {
+                    RESULTS_DATA[surveyId][question['qid']]['options'][vote] = 1
+                }
+            } else {
+                //If no answer,
+
+                if (RESULTS_DATA[surveyId][question['qid']]['options']['NA']) {
+                    RESULTS_DATA[surveyId][question['qid']]['options']['NA'] = RESULTS_DATA[surveyId][question['qid']]['options']['NA'] + 1;
+                } else {
+                    RESULTS_DATA[surveyId][question['qid']]['options']['NA'] = 1
+                }
+
+            }
+
+        }
+    });
+    //this will update the collection with the new data or inser the doc is it does not exist.
+    db.collection(GRAPHS_DATA).update( {}, RESULTS_DATA, { upsert: true }, function(err, doc) {
         if (err) {
-            handleError(res, err.message, 'Failed to POST survey taken data.');
+            console.log("error in graphs Data:", err.message );
+            handleError(res, err.message, 'Failed to POST graphs data.');
         } else {
             res.status(201).json(doc);
         }
     });
 
-});
+}
 
 
 router.post('/getAllSurveys', (req, res) => {
@@ -82,8 +182,6 @@ router.post('/getAllSurveys', (req, res) => {
             console.log(err);
             res.status(500).send(err);
         } else {
-            // console.log("Found the following records");
-            // console.dir(docs);
             res.status(200).json(docs);
         }
     });
@@ -115,10 +213,14 @@ router.post('deleteSurvey', (req, res) => {
 
 router.get('/download/:surveyKey', (req, res) => {
     console.log('key ' + req.params.surveyKey);
-    if (!req.params.surveyKey) {
+    let key = req.params.surveyKey;
+    if (!key) {
         res.status(400).send('Invalid Survey key');
     }
-   /* db.collection(USER_SURVEY_TAKEN).find({'key': req.params.surveyKey}).toArray(function(err, docs) {
+    const query = {};
+    query[key] = { $exists: true}
+    db.collection(SURVEY_RESPONSES).find(query).toArray(function(err, docs) {
+        console.log(docs);
         if (err) {
             res.status(400).send(err);
         } else if (docs == null || docs.length == 0) {
@@ -126,9 +228,8 @@ router.get('/download/:surveyKey', (req, res) => {
         } else {
             res.status(200).json(docs);
         }
-    });*/
-   const data = [{"quid":1,"competency":"Motivate","question":"Think about how you remembered and followed directions today. What is a strategy you used to do this well?","questiontype":"Text Input"},{"quid":2,"competency":"Motivate","question":"I feel excited by the work in this project","questiontype":"Scale ","responseoptions":"Never, On Occasion, Some of the time, All of the time"},{"quid":3,"competency":"Motivate","question":"What is the one thing you\"d like to know about our research topic?","questiontype":"Text Input"},{"quid":4,"competency":"Engage","question":"We learned about a complicated community problem today. How confident are you that you can understand this challenge?","questiontype":"Text Input"},{"quid":5,"competency":"Engage","question":"I feel eager to participate in the activities we\"re doing as part of this project","questiontype":"Scale ","responseoptions":"Not at all eager, slightly eager, somewhat eager, quite eager, extremely eager"},{"quid":6,"competency":"Create","question":"I am capable of learning anything","questiontype":"Yes/No"}]
-    res.status(200).json(data);
+    });
+
 });
 
 router.post('/postExcelData', (req, res) => {
