@@ -3,11 +3,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
+import FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
 
 const SurveyList = (props) => {
 
     function handleSwitch(e) {
         console.log('The link was clicked.');
+    }
+
+    function downloadResults(e) {
+        const surveyKey = e.target.id;
+        axios({
+            method:'get',
+            url: '/survey/download/' + surveyKey
+        }).then(function (response) {
+            if (response.status == 200)
+            {
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.json_to_sheet(response.data);
+                const ws_name = "Survey_Results";
+                XLSX.utils.book_append_sheet(wb, ws, ws_name);
+                const wopts = { bookType:'xlsx', bookSST:false, type:'binary' };
+
+                var wbout = XLSX.write(wb, wopts);
+
+                function s2ab(s) {
+                    var buf = new ArrayBuffer(s.length);
+                    var view = new Uint8Array(buf);
+                    for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+                    return buf;
+                }
+
+                /* the saveAs call downloads a file on the local machine */
+                FileSaver.saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "test.xlsx");
+            }
+        })
+        .catch(function (error) {
+            console.log('cusom error ' + error);
+        });
     }
 
     const SurveyItems = props.surveys.map((survey) => {
