@@ -18,17 +18,17 @@ export default class ResultsPage extends Component { // eslint-disable-line reac
 
     componentDidMount() {
         const that = this;
-        console.log('Mounting survey results');
+        const key = window.location.pathname.split('/')[2];
         axios({
             method:'get',
-            url: '/survey/surveyResults/' + window.location.pathname.split('/')[2]
+            url: '/survey/surveyResults/' + key
         }).then( (response) => {
             console.dir(response.data)
             if (response.status === 200) {
                 console.dir('axios call', response)
-                this.setState({
-                    surveyResults: response.data
-                });
+                response.data.length > 0 ? this.setState({
+                    surveyResults: response.data[0][key]
+                }): alert('No Results Available');
             } else {
                 alert('Something went wrong');
                 console.log(response);
