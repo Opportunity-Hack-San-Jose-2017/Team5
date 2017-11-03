@@ -7,7 +7,6 @@ const moment = require('moment');
 const router = express.Router();
 const mongo = require('../mongo');
 const uid = require('uid2');
-const XLSX = require('xlsx');
 const sentiment = require('node-sentiment');
 
 // Collections
@@ -231,7 +230,6 @@ router.get('/download/:surveyKey', (req, res) => {
         }
     });
 
-    // res.status(200).json(data);
 });
 
 router.post('/postExcelData', (req, res) => {

@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import {Button, Modal, Pager} from 'react-bootstrap';
 import ReactFileReader from 'react-file-reader';
@@ -9,8 +8,6 @@ import SurveyList from '../../components/HomePage/SurveyList';
 import NavBar from '../../components/NavBar';
 import SearchBar from '../../components/SearchBar';
 
-
-//let _surveyData = [];
 
 class FileUpload extends Component {
   constructor(props) {
@@ -216,13 +213,6 @@ class FileUpload extends Component {
       </div>
     )
   }
-
 }
-
-/*
-FileUpload.propTypes = {
-    surveys: PropTypes.array.isRequired
-}
-*/
 
 export default FileUpload;
