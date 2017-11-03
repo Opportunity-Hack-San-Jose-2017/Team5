@@ -21,12 +21,12 @@ const Graphs = (props) => {
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip/>
                     <Legend />
-                    <Bar dataKey="value" fill="#82ca9d" />
+                    <Bar dataKey="value" fill="#90cc38" />
               </BarChart>
             </div>
             <div className=" col-md-4" >
                 <PieChart width={500} height={300} margin={{top: -50, right: 0, left: 0, bottom: 0}}>
-                    <Pie isAnimationActive={true} dataKey="value"  data={barChartData} cx={200} cy={200} outerRadius={100} fill="#8884d8" label />
+                    <Pie isAnimationActive={true} dataKey="value"  data={barChartData} cx={200} cy={200} outerRadius={100} fill="#228B22" label />
                     <Tooltip/>
                 </PieChart>
             </div>
