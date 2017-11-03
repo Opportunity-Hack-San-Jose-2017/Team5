@@ -15,6 +15,6 @@ import ResultsPage from '../../components/ResultsPage/index';
 
 export default function HomePage() { // eslint-disable-line react/prefer-stateless-function
     return (
-        <ResultsPage />
+        <ResultsPage  />
     );
 }
