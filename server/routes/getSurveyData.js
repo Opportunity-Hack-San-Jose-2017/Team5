@@ -57,6 +57,11 @@ router.get('/questions/:id', (req, res) => {
 
 // POST for surveyTaken
 router.post('/surveyTaken', (req, res) => {
+    const surveyId = req.body.answers.surveyId;
+    const result = {};
+    result[surveyId] = req.body.answers;
+    let responses;
+    let questionRow = {};
     if(Object.keys(RESULTS_DATA).length === 0) {
         db.collection(GRAPHS_DATA).find({}).toArray(function(err, doc) {
             if(doc[0]) {
@@ -67,6 +72,38 @@ router.post('/surveyTaken', (req, res) => {
     } else {
         insertResults(req, res);
     }
+    db.collection(SURVEY_RESPONSES).find({}).toArray(function(err, doc) {
+        if(doc[0]) {
+            responses = doc[0];
+        } else {
+            responses = {};
+            questionRow.firstName = "";
+            questionRow.lastName = "";
+            result[surveyId]['questions'].forEach(question => {
+                questionRow[question['qid']] = question['question']
+            });
+        }
+        result[surveyId]['questions'].forEach(question => {
+            result[surveyId][question['qid']] = question['answer']
+        });
+        delete result[surveyId]['questions'];
+        delete result[surveyId]['teacherName'];
+        delete result[surveyId]['surveyId'];
+        if(responses[surveyId]) {
+            responses[surveyId].push(result[surveyId]);
+        } else {
+            responses[surveyId] = [];
+            responses[surveyId].push(questionRow);
+            responses[surveyId].push(result[surveyId]);
+        }
+        db.collection(SURVEY_RESPONSES).update( {}, responses, { upsert: true }, function(err, doc) {
+            if (err) {
+                console.log( err.message, 'Failed to POST survey taken data.');
+            } else {
+                console.log('Updated SUccessfully');
+            }
+        });
+    });
 
 });
 
@@ -120,9 +157,6 @@ function insertResults(req, res){
 
         }
     });
-    console.log(JSON.stringify(RESULTS_DATA));
-
-
     //this will update the collection with the new data or inser the doc is it does not exist.
     db.collection(GRAPHS_DATA).update( {}, RESULTS_DATA, { upsert: true }, function(err, doc) {
         if (err) {
@@ -146,8 +180,6 @@ router.post('/getAllSurveys', (req, res) => {
             console.log(err);
             res.status(500).send(err);
         } else {
-            // console.log("Found the following records");
-            // console.dir(docs);
             res.status(200).json(docs);
         }
     });
@@ -179,20 +211,24 @@ router.post('deleteSurvey', (req, res) => {
 
 router.get('/download/:surveyKey', (req, res) => {
     console.log('key ' + req.params.surveyKey);
-    if (!req.params.surveyKey) {
+    let key = req.params.surveyKey;
+    if (!key) {
         res.status(400).send('Invalid Survey key');
     }
-    /* db.collection(USER_SURVEY_TAKEN).find({'key': req.params.surveyKey}).toArray(function(err, docs) {
-         if (err) {
-             res.status(400).send(err);
-         } else if (docs == null || docs.length == 0) {
-             res.status(204).send('No Results Found!!');
-         } else {
-             res.status(200).json(docs);
-         }
-     });*/
-    const data = [{"quid":1,"competency":"Motivate","question":"Think about how you remembered and followed directions today. What is a strategy you used to do this well?","questiontype":"Text Input"},{"quid":2,"competency":"Motivate","question":"I feel excited by the work in this project","questiontype":"Scale ","responseoptions":"Never, On Occasion, Some of the time, All of the time"},{"quid":3,"competency":"Motivate","question":"What is the one thing you\"d like to know about our research topic?","questiontype":"Text Input"},{"quid":4,"competency":"Engage","question":"We learned about a complicated community problem today. How confident are you that you can understand this challenge?","questiontype":"Text Input"},{"quid":5,"competency":"Engage","question":"I feel eager to participate in the activities we\"re doing as part of this project","questiontype":"Scale ","responseoptions":"Not at all eager, slightly eager, somewhat eager, quite eager, extremely eager"},{"quid":6,"competency":"Create","question":"I am capable of learning anything","questiontype":"Yes/No"}]
-    res.status(200).json(data);
+    const query = {};
+    query[key] = { $exists: true}
+    db.collection(SURVEY_RESPONSES).find(query).toArray(function(err, docs) {
+        console.log(docs);
+        if (err) {
+            res.status(400).send(err);
+        } else if (docs == null || docs.length == 0) {
+            res.status(204).send('No Results Found!!');
+        } else {
+            res.status(200).json(docs);
+        }
+    });
+
+    // res.status(200).json(data);
 });
 
 router.post('/postExcelData', (req, res) => {
