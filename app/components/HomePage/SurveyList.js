@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import { Card, Icon, Image } from 'semantic-ui-react'
+
 
 const SurveyList = (props) => {
 
@@ -33,11 +35,15 @@ const SurveyList = (props) => {
                         </ul>
                     </div>
                     <div className="col-md-5">
-                        <button className="btn btn-warning survey-btn btn-sm">Remove</button>
+                        <Link to={"/results/" + survey._id} className="btn btn-default btn-sm survey-btn viewResults"> <i className="fa fa-eye" aria-hidden="true"></i>View Results</Link>
+
                         {
-                            survey.hasResults ? null : <button  className="btn btn-success  survey-btn btn-sm">Download Results</button>
+                            survey.hasResults ? null : <button  className="btn btn-success downloadResults survey-btn btn-sm"><i className="fa fa-cloud-download" aria-hidden="true"></i>
+                                Download Results</button>
                         }
-                        <Link to={"/results/" + survey._id} className="btn btn-default btn-sm survey-btn">View Results</Link>
+
+                        <button className="btn btn-danger deleteButton" href="#">
+                            <i className="fa fa-trash" aria-hidden="true"></i> Delete</button>
                     </div>
                 </div>
             </div>
