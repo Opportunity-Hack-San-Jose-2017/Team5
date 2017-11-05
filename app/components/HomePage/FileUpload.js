@@ -1,16 +1,13 @@
 /* eslint-disable */
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
 import axios from 'axios';
-import {Button, Modal} from 'react-bootstrap';
+import {Button, Modal, Pager} from 'react-bootstrap';
 import ReactFileReader from 'react-file-reader';
 import * as XLSX from 'xlsx';
 import SurveyList from '../../components/HomePage/SurveyList';
 import NavBar from '../../components/NavBar';
 import SearchBar from '../../components/SearchBar';
 
-
-//let _surveyData = [];
 
 class FileUpload extends Component {
   constructor(props) {
@@ -26,7 +23,7 @@ class FileUpload extends Component {
       hasResults: false
     };
 
-    this.getSurveys('Allison');
+    this.getSurveys('Admin');
     this.handleFiles = this.handleFiles.bind(this)
     this.saveSurvey = this.saveSurvey.bind(this)
     this.open = this.open.bind(this);
@@ -46,11 +43,11 @@ class FileUpload extends Component {
           filteredSurveys: response.data
         });
       } else {
-        alert('Something went wrong');
+          console.log('Something went wrong');
         console.log(response);
       }
     }).catch((error) => {
-      alert('Something went wrong');
+         console.log('Something went wrong');
       console.log(error);
     });
   }
@@ -58,7 +55,7 @@ class FileUpload extends Component {
   open = () => {
     this.setState({surveyTitle: ''});
     this.setState({surveyData: undefined});
-    this.setState({isSurveyEnabled: false});
+    this.setState({isSurveyEnabled: true});
     this.setState({hasResults: false});
     this.setState({ showModal: true });
   }
@@ -85,13 +82,15 @@ class FileUpload extends Component {
       });
       const XL_row_object = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
       const newJson = [];
-      for(let k in XL_row_object) {
+      let count = 1;
+      XL_row_object.forEach(function (row) {
         let temp = {};
-        for(let i = 0 ; i < Object.keys(XL_row_object[k]).length ; i++){
-          temp[Object.keys(XL_row_object[k])[i].toString().toLowerCase().replace(/ +/g, "")] = XL_row_object[k][Object.keys(XL_row_object[k])[i]];
-        }
-        newJson.push(temp)
-      }
+        temp['qid'] = count++;
+        Object.keys(row).forEach(function (key) {
+          temp[key.toString().toLowerCase().replace(/ +/g, "")] = row[key];
+        });
+        newJson.push(temp);
+      });
       that.setState({
         surveyData: newJson
       });
@@ -112,7 +111,7 @@ class FileUpload extends Component {
     }).then((response) => {
       console.dir(response);
     }).catch((error) => {
-      alert('Something went wrong');
+      console.log('Something went wrong');
       console.log(error);
     });
   }
@@ -129,28 +128,26 @@ class FileUpload extends Component {
           surveyQuestions: this.state.surveyData,
           hasResults: this.state.hasResults,
           isSurveyEnabled: this.state.isSurveyEnabled,
-          postedBy: 'Allison'
+          postedBy: 'Admin'
         }).then(function (response) {
-          console.dir(response);
             if (response.status === 201) {
-              surveys.push(response.data)
+              surveys.unshift(response.data);
               that.setState({ surveys: surveys,
                 filteredSurveys: surveys
               });
             }
         }).catch(function (error) {
-            alert('Something went wrong at the server side');
+            console.log('Something went wrong at the server side');
             console.log(error);
         });
     } else {
-      alert("Need both file and survey name to create the survey");
+        console.log("Need both file and survey name to create the survey");
     }
   }
 
   filterSurvey (surveyTitle) {
     let filteredSurveys = this.state.surveys;
      filteredSurveys = filteredSurveys.filter(function (survey) {
-       console.log(survey)
       if (survey.surveyTitle && survey.surveyTitle.includes(surveyTitle) || surveyTitle === '') {
         return survey;
       }
@@ -206,17 +203,16 @@ class FileUpload extends Component {
           <div className="row">
             <SurveyList surveys={this.state.filteredSurveys} onSurveyDelete={this.state.deleteSurvey} />
           </div>
+          <div className="row">
+              <Pager>
+                <Pager.Item previous href="#">&larr; Previous Page</Pager.Item>
+                <Pager.Item next href="#">Next Page &rarr;</Pager.Item>
+              </Pager>
+            </div>
         </div>
       </div>
     )
   }
-
 }
-
-/*
-FileUpload.propTypes = {
-    surveys: PropTypes.array.isRequired
-}
-*/
 
 export default FileUpload;

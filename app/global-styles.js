@@ -17,7 +17,7 @@ injectGlobal`
   }
 
   #app {
-    background-color: #fafafa;
+    background-color: #f2f2f2;
     min-height: 100%;
     min-width: 100%;
   }
@@ -38,7 +38,8 @@ injectGlobal`
   
   .survey-btn {
     margin-top: 40px;
-    float: right;
+    font-weight: 400;
+    
   }
   
   .Login {
@@ -58,6 +59,7 @@ injectGlobal`
   .upload-primary {
     float: right;
     margin-right: 25px;
+    border-radius: 25px;
   }
   
   .modal-title-custom {
@@ -73,9 +75,9 @@ injectGlobal`
   .switch {
   position: relative;
   display: inline-block;
-  width: 70px;
-  height: 34px;
-  margin-top: 20px
+  width: 50px;
+  height: 25px;
+  margin-top: 28px
 }
 
 .switch input {display:none;}
@@ -95,10 +97,10 @@ injectGlobal`
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
+  height: 21px;
+  width: 19px;
+  left: 2px;
+  bottom: 2px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
@@ -137,5 +139,74 @@ input:checked + .slider:before {
 }
 .right-addon input { padding-right: 30px; }
 .right-addon .glyphicon { right: 0px;}
+
+.panel-heading a:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\\e114";    
+    float: right; 
+    color: grey; 
+}
+.panel-heading a.collapsed:after {
+    content: "\\e080";
+}
+#container{
+    padding:10px;
+    width: 90%;
+    margin-left: 5%;
+}
+.panel-body {
+    height: 300px;
+    overflow-y:auto;
+}
+.panel-heading.collapsed .fa-chevron-down,
+.panel-heading .fa-chevron-right {
+  display: none;
+}
+.panel-heading.collapsed .fa-chevron-right,
+.panel-heading .fa-chevron-down {
+  display: inline-block;
+}
+i.fa {
+  cursor: pointer;
+  margin-right: 5px;
+}
+.collapsed ~ .panel-body {
+  padding: 0;
+}
+.navbar-brand{
+ margin-bottom:10px;
+}
+.next {
+  margin-right: 25px;
+}
+.deleteButton {
+	background-color: #c60e2d;
+    border-color: #c60e2d;
+    border-radius: 25px;
+    margin-left: 333px;
+    margin-top: -35px;
+    margin-bottom: 21px;
+    padding-bottom: 8px;
+    font-size: 13px;
+}
+.downloadResults{
+	margin-left: 10px;
+    margin-left: 7px;
+    border-radius: 25px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+    font-size: 14px;
+    display: inline-block;
+}
+.viewResults{
+	margin-left: 46px;
+    border-radius: 25px;
+    display: inline-block;
+    font-size: 14px;
+    padding-bottom: 8px;
+}
+.login-navbar{
+    display:none !important;
+}
 }
 `;
