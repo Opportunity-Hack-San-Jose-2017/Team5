@@ -1,13 +1,14 @@
 /* eslint-disable */
 'use strict';
+
 let db;
 const express = require('express');
 const moment = require('moment');
 const router = express.Router();
 const mongo = require('../mongo');
 const uid = require('uid2');
-const XLSX = require('xlsx');
 const sentiment = require('node-sentiment');
+
 // Collections
 const DATA_COLLECTION = 'userdetails';
 const SURVEY_DATA_COLLECTION = 'surveydata';
@@ -15,9 +16,11 @@ const USER_SURVEY_TAKEN = 'surveytakendata';
 const GRAPHS_DATA = 'graphsData';
 const SURVEY_RESPONSES = 'surveyResponses';
 let RESULTS_DATA = {};
+
 mongo.connect((_db) => {
     db = _db;
 });
+
 router.get('/data', (req, res) => {
     db.collection(DATA_COLLECTION).find({}).toArray(function(err, docs) {
         if (err) {
@@ -27,6 +30,7 @@ router.get('/data', (req, res) => {
         }
     });
 });
+
 // GET for questions being taken
 router.get('/questions', (req, res) => {
     db.collection(SURVEY_DATA_COLLECTION).find({}).toArray(function(err, docs) {
@@ -37,6 +41,7 @@ router.get('/questions', (req, res) => {
         }
     });
 });
+
 // GET for questions being taken
 router.get('/questions/:id', (req, res) => {
     var qid = req.params.id;
@@ -48,6 +53,7 @@ router.get('/questions/:id', (req, res) => {
         }
     });
 });
+
 // POST for surveyTaken
 router.post('/surveyTaken', (req, res) => {
     const surveyId = req.body.answers.surveyId;
@@ -99,7 +105,9 @@ router.post('/surveyTaken', (req, res) => {
             }
         });
     });
+
 });
+
 function insertResults(req, res){
     const surveyId = req.body.answers.surveyId;
     const result = {};
@@ -107,6 +115,7 @@ function insertResults(req, res){
     if(!RESULTS_DATA.hasOwnProperty(surveyId)) {
         RESULTS_DATA[surveyId] = {};
     }
+
     result[surveyId].answers['questions'].forEach(question => {
         if(!RESULTS_DATA[surveyId].hasOwnProperty(question['qid'])) {
             RESULTS_DATA[surveyId][question['qid']] = {};
@@ -121,12 +130,16 @@ function insertResults(req, res){
                 RESULTS_DATA[surveyId][question['qid']]['options'][question['answer']] = 1
             }
         } else {
+
             /* Sentiment Analysis Starts */
+
             let ans = question['answer'];
+
             // Flow if user answered!
             if(ans) {
                 let options = RESULTS_DATA[surveyId][question['qid']]['options'];
                 let vote = sentiment(ans).vote;
+
                 if (RESULTS_DATA[surveyId][question['qid']]['options'][vote]) {
                     RESULTS_DATA[surveyId][question['qid']]['options'][vote] = RESULTS_DATA[surveyId][question['qid']]['options'][vote] + 1;
                 } else {
@@ -134,12 +147,15 @@ function insertResults(req, res){
                 }
             } else {
                 //If no answer,
+
                 if (RESULTS_DATA[surveyId][question['qid']]['options']['NA']) {
                     RESULTS_DATA[surveyId][question['qid']]['options']['NA'] = RESULTS_DATA[surveyId][question['qid']]['options']['NA'] + 1;
                 } else {
                     RESULTS_DATA[surveyId][question['qid']]['options']['NA'] = 1
                 }
+
             }
+
         }
     });
     //this will update the collection with the new data or inser the doc is it does not exist.
@@ -151,8 +167,12 @@ function insertResults(req, res){
             res.status(201).json(doc);
         }
     });
+
 }
+
+
 router.post('/getAllSurveys', (req, res) => {
+
     if(!req.body || req.body.length == 0) {
         res.status(400).send('Need teacher name');
         return;
@@ -166,17 +186,22 @@ router.post('/getAllSurveys', (req, res) => {
         }
     });
 });
+
 router.post('/updateSurvey', (req, res) => {
+
     if(!req.body || req.body.length == 0 || req.body._id) {
         res.status(400).send('Invalid survey id');
         return ;
     }
+
 });
+
 router.post('deleteSurvey', (req, res) => {
     if(!req.body || req.body.length == 0 || req.body._id) {
         res.status(400).send('Invalid survey id');
         return ;
     }
+
     db.collection(SURVEY_DATA_COLLECTION).deleteOne({ _id : req.body._id }, function(err, result) {
         if (err) {
             res.status(400).send(err);
@@ -185,8 +210,8 @@ router.post('deleteSurvey', (req, res) => {
         }
     });
 });
+
 router.get('/download/:surveyKey', (req, res) => {
-    console.log('key ' + req.params.surveyKey);
     let key = req.params.surveyKey;
     if (!key) {
         res.status(400).send('Invalid Survey key');
@@ -194,18 +219,19 @@ router.get('/download/:surveyKey', (req, res) => {
     const query = {};
     query[key] = { $exists: true}
     db.collection(SURVEY_RESPONSES).find(query).toArray(function(err, docs) {
-        console.log(docs);
         if (err) {
             res.status(400).send(err);
-        } else if (docs == null || docs.length == 0) {
+        } else if (docs.length == 0) {
             res.status(204).send('No Results Found!!');
         } else {
             res.status(200).json(docs);
         }
     });
-    // res.status(200).json(data);
+
 });
+
 router.post('/postExcelData', (req, res) => {
+
     console.log('<<-- POST EXCEL DATA ->>');
     if(!req.body || req.body.length == 0) {
         resp.status(400).send('Invalid Survey Data');
@@ -218,11 +244,11 @@ router.post('/postExcelData', (req, res) => {
     survey = Object.assign(survey, req.body);
     survey.isSurveyEnabled = survey.isSurveyEnabled ? survey.isSurveyEnabled : false;
     survey.postedOn =  moment().format('LLL');
+
     /*res.status(201).json(survey);*/
     db.collection(SURVEY_DATA_COLLECTION).insertOne(survey, function(err, doc) {
         if (err) {
             console.log(err);
-            //handleError(res, err.message, 'Failed to POST survey taken data.');
             res.status(400).send(err);
         } else {
             res.status(201).json(survey);
@@ -231,18 +257,21 @@ router.post('/postExcelData', (req, res) => {
 });
 
 router.get('/surveyResults/:surveyKey', (req, res) => {
-    console.log('survey Key' + req.params.surveyKey);
-    if(!req.params.surveyKey) {
+
+    const key = req.params.surveyKey;
+    if(!key) {
         res.status(400).send('Invalid Survey Key');
     }
-    db.collection().find({}).toArray(function(err, docs) {
-        if (err) {
-            console.log(err);
-            res.status(400).send(err);
-        } else {
-            res.status(200).json(docs);
-        }
-    });
+    let query = {};
+    query[key] = { $exists: true};
+     db.collection(GRAPHS_DATA).findOne(query, function(err, document) {
+         if (err) {
+             console.log(err);
+             res.status(400).send(err);
+         } else {
+             res.status(200).json(document);
+         }
+     });
 });
 
 module.exports = router;

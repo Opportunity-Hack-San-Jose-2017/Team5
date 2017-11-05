@@ -18,8 +18,6 @@ import HomePage from 'containers/HomePage/Loadable';
 import ResultsPage from 'containers/ResultsPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Auth from '../../components/Auth/Auth';
-import history from '../../components/Auth/history';
-import LoginPage from '../../components/Auth/Login';
 
 const auth = new Auth();
 

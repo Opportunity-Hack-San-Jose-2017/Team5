@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import {Button, Modal, Pager} from 'react-bootstrap';
 import ReactFileReader from 'react-file-reader';
@@ -9,8 +8,6 @@ import SurveyList from '../../components/HomePage/SurveyList';
 import NavBar from '../../components/NavBar';
 import SearchBar from '../../components/SearchBar';
 
-
-//let _surveyData = [];
 
 class FileUpload extends Component {
   constructor(props) {
@@ -26,7 +23,7 @@ class FileUpload extends Component {
       hasResults: false
     };
 
-    this.getSurveys('Allison');
+    this.getSurveys('Admin');
     this.handleFiles = this.handleFiles.bind(this)
     this.saveSurvey = this.saveSurvey.bind(this)
     this.open = this.open.bind(this);
@@ -46,11 +43,11 @@ class FileUpload extends Component {
           filteredSurveys: response.data
         });
       } else {
-        alert('Something went wrong');
+          console.log('Something went wrong');
         console.log(response);
       }
     }).catch((error) => {
-      alert('Something went wrong');
+         console.log('Something went wrong');
       console.log(error);
     });
   }
@@ -58,7 +55,7 @@ class FileUpload extends Component {
   open = () => {
     this.setState({surveyTitle: ''});
     this.setState({surveyData: undefined});
-    this.setState({isSurveyEnabled: false});
+    this.setState({isSurveyEnabled: true});
     this.setState({hasResults: false});
     this.setState({ showModal: true });
   }
@@ -114,7 +111,7 @@ class FileUpload extends Component {
     }).then((response) => {
       console.dir(response);
     }).catch((error) => {
-      alert('Something went wrong');
+      console.log('Something went wrong');
       console.log(error);
     });
   }
@@ -131,7 +128,7 @@ class FileUpload extends Component {
           surveyQuestions: this.state.surveyData,
           hasResults: this.state.hasResults,
           isSurveyEnabled: this.state.isSurveyEnabled,
-          postedBy: 'Allison'
+          postedBy: 'Admin'
         }).then(function (response) {
             if (response.status === 201) {
               surveys.unshift(response.data);
@@ -140,11 +137,11 @@ class FileUpload extends Component {
               });
             }
         }).catch(function (error) {
-            alert('Something went wrong at the server side');
+            console.log('Something went wrong at the server side');
             console.log(error);
         });
     } else {
-      alert("Need both file and survey name to create the survey");
+        console.log("Need both file and survey name to create the survey");
     }
   }
 
@@ -216,13 +213,6 @@ class FileUpload extends Component {
       </div>
     )
   }
-
 }
-
-/*
-FileUpload.propTypes = {
-    surveys: PropTypes.array.isRequired
-}
-*/
 
 export default FileUpload;
