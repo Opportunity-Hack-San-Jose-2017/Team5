@@ -43,11 +43,11 @@ class FileUpload extends Component {
           filteredSurveys: response.data
         });
       } else {
-        alert('Something went wrong');
+          console.log('Something went wrong');
         console.log(response);
       }
     }).catch((error) => {
-      alert('Something went wrong');
+         console.log('Something went wrong');
       console.log(error);
     });
   }
@@ -111,7 +111,7 @@ class FileUpload extends Component {
     }).then((response) => {
       console.dir(response);
     }).catch((error) => {
-      alert('Something went wrong');
+      console.log('Something went wrong');
       console.log(error);
     });
   }
@@ -137,11 +137,11 @@ class FileUpload extends Component {
               });
             }
         }).catch(function (error) {
-            alert('Something went wrong at the server side');
+            console.log('Something went wrong at the server side');
             console.log(error);
         });
     } else {
-      alert("Need both file and survey name to create the survey");
+        console.log("Need both file and survey name to create the survey");
     }
   }
 

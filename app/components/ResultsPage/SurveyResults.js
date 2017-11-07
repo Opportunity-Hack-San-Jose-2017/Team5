@@ -35,9 +35,9 @@ const SurveyResults = (props) => {
     return (
         <div className="container">
             <div className="col-md-12">
-                { props.surveyResults.length == 0 ? <div className="media">
+                { Object.keys(props.surveyResults).length === 0 ? <div className="media">
                     <div className="media-body">
-                            <h1>No Results Found for this Survey</h1>
+                            <h1> No Results Found for this Survey </h1>
                     </div>
                 </div> : surveyQuestions }
             </div>

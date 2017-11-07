@@ -26,15 +26,15 @@ export default class ResultsPage extends Component { // eslint-disable-line reac
             console.dir(response.data)
             if (response.status === 200) {
                 console.dir('axios call', response)
-                response.data.length > 0 ? this.setState({
-                    surveyResults: response.data[0][key]
-                }): alert('No Results Available');
+                response.data !== null ? this.setState({
+                    surveyResults: response.data[key]
+                }): console.log('No Results Available');
             } else {
-                alert('Something went wrong');
+                console.log('Something went wrong');
                 console.log(response);
             }
         }).catch((error) => {
-            alert('Something went wrong');
+            console.log('Something went wrong');
             console.log(error);
         });
     };

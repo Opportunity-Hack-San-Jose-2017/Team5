@@ -257,17 +257,21 @@ router.post('/postExcelData', (req, res) => {
 });
 
 router.get('/surveyResults/:surveyKey', (req, res) => {
-    if(!req.params.surveyKey) {
+
+    const key = req.params.surveyKey;
+    if(!key) {
         res.status(400).send('Invalid Survey Key');
     }
-    db.collection(GRAPHS_DATA).find({}).toArray(function(err, docs) {
-        if (err) {
-            console.log(err);
-            res.status(400).send(err);
-        } else {
-            res.status(200).json(docs);
-        }
-    });
+    let query = {};
+    query[key] = { $exists: true};
+     db.collection(GRAPHS_DATA).findOne(query, function(err, document) {
+         if (err) {
+             console.log(err);
+             res.status(400).send(err);
+         } else {
+             res.status(200).json(document);
+         }
+     });
 });
 
 module.exports = router;
